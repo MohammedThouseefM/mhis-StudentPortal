@@ -64,7 +64,7 @@ router.get(
 // Get total fee by class
 router.get(
   '/total-fee-by-class',
-  [authMiddleware.devBypass, authMiddleware.isAdmin],
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
   feeController.getTotalFeeByClass
 );
 

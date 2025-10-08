@@ -72,17 +72,11 @@ exports.getTotalFeeByClass = async (req, res) => {
         // Add a field to extract the numeric part of the year
         $addFields: {
           yearNumber: {
-            $cond: {
-              if: { $eq: [{ $type: "$year" }, "string"] },
-              then: {
-                $toInt: {
-                  $arrayElemAt: [
-                    { $split: [{ $substr: ["$year", 0, 1] }, ""] },
-                    0
-                  ]
-                }
-              },
-              else: "$year"
+            $toInt: {
+              $arrayElemAt: [
+                { $split: [{ $regexFind: { input: "$year", regex: /^\d+/ } }, ""] },
+                0
+              ]
             }
           }
         }

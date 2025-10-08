@@ -18,6 +18,7 @@ const feedbackRoutes = require('./routes/feedback.routes');
 const feedbackSessionRoutes = require('./routes/feedback-session.routes');
 const feeRoutes = require('./routes/fee.routes');
 const resultRoutes = require('./routes/result.routes');
+const duplicateRoutes = require('./routes/duplicate.routes');
 
 // Initialize express app
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/feedback-sessions', feedbackSessionRoutes);
 app.use('/api/fees', feeRoutes);
 app.use('/api/results', resultRoutes);
+app.use('/api/duplicate', duplicateRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -75,37 +77,11 @@ app.post('/register', validateRegistration, (req, res, next) => {
 mongoose.connect(config.DB.URI, config.DB.OPTIONS)
   .then(() => {
     console.log('Connected to MongoDB database!');
-    // Start server with dynamic port finding
-    const findAvailablePort = (startPort) => {
-      return new Promise((resolve, reject) => {
-        const server = require('net').createServer();
-        server.unref();
-        server.on('error', (err) => {
-          if (err.code === 'EADDRINUSE') {
-            resolve(findAvailablePort(startPort + 1));
-          } else {
-            reject(err);
-          }
-        });
-        server.listen(startPort, () => {
-          const port = server.address().port;
-          server.close(() => {
-            resolve(port);
-          });
-        });
-      });
-    };
-
-    // Try to find an available port starting from 3000
-    findAvailablePort(3000)
-      .then(PORT => {
-        app.listen(PORT, () => {
-          console.log(`Server is running on port ${PORT}.`);
-        });
-      })
-      .catch(err => {
-        console.error('Failed to find an available port:', err);
-      });
+    // Start server
+    const PORT = 3456; // Hardcoded to avoid port conflicts
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}.`);
+    });
   })
   .catch(err => {
     console.error('Cannot connect to the database!', err);
