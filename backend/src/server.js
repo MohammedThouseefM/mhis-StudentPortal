@@ -43,7 +43,6 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/feedback-sessions', feedbackSessionRoutes);
 app.use('/api/fees', feeRoutes);
 app.use('/api/results', resultRoutes);
-app.use('/api/duplicate', duplicateRoutes);
 
 // Root route
 app.get('/', (req, res) => {

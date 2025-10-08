@@ -39,13 +39,15 @@ const FeeSchema = new Schema({
     required: true
   },
   lastPaymentDate: {
-    type: Date,
-    required: false
+    type: Date
   },
   paymentReference: {
-      type: String,
-      required: false
-    }
+    type: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Fee', FeeSchema);
